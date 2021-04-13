@@ -8,17 +8,26 @@ window.onload = function(){
     var buttonStart = document.getElementById("button-start");
     var buttonStop = document.getElementById("button-stop");
     var buttonReset = document.getElementById("button-reset");
+    var buttonLap = document.getElementById("button-lap");
+    var lapSplit = document.getElementById("lap-split");
+    var stopInd;
     var Interval;
+    var timing;
+    var splitList = [];
     
     
 
 buttonStart.onclick = function(){
+    if(stopInd){
+        stopInd = false;
+    }
 
     clearInterval(Interval);
     Interval = setInterval(startTimer,10);
 }
 
 buttonStop.onclick = function(){
+    stopInd = true;
     clearInterval(Interval);
 }
 
@@ -30,6 +39,38 @@ buttonReset.onclick = function(){
     appendMinutes.innerHTML = minutes;
     appendSeconds.innerHTML = seconds;
     appendTens.innerHTML = tens;
+    //Clear lap-splits result for when reset is clicked
+    lapSplit.innerHTML = "";
+}
+
+buttonLap.onclick = function(){
+    
+    // If timer was stopped, do no log the lap split
+    if(stopInd){
+        return;
+    }
+   
+    // Add a 0 at the front of tens if tens is equal or less than 9.
+    // This ensure tens have 2 digits
+    // Ensure the digits length stay at 2
+    if(tens<=9 && tens.toString().length<2){
+        tens = "0" + tens;
+    }
+
+    if(seconds<=9 && seconds.toString().length<2){
+        seconds = "0" + seconds;
+    }
+
+    if(minutes<=9 && minutes.toString().length<2){
+        minutes = "0" + minutes;
+    }
+
+    timing = minutes + ":" + seconds + ":" + tens ;
+    
+    splitList.push(timing)
+
+    lapSplit.innerHTML += '<li>' + timing + '</li>'
+   
 }
 
 
