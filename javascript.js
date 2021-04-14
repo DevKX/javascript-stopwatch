@@ -10,10 +10,14 @@ window.onload = function(){
     var buttonReset = document.getElementById("button-reset");
     var buttonLap = document.getElementById("button-lap");
     var lapSplit = document.getElementById("lap-split");
+    var lap = document.getElementById("lap");
+    var noOfLap = 0;
     var stopInd;
     var Interval;
     var timing;
-    var splitList = [];
+    var counter = 0;
+
+
     
     
 
@@ -41,15 +45,21 @@ buttonReset.onclick = function(){
     appendTens.innerHTML = tens;
     //Clear lap-splits result for when reset is clicked
     lapSplit.innerHTML = "";
+    lap.innerHTML = "";
+    noOfLap = 0;
 }
 
 buttonLap.onclick = function(){
     
     // If timer was stopped, do no log the lap split
+
+    
     if(stopInd){
         return;
     }
    
+    noOfLap++;
+    counter++;
     // Add a 0 at the front of tens if tens is equal or less than 9.
     // This ensure tens have 2 digits
     // Ensure the digits length stay at 2
@@ -67,9 +77,21 @@ buttonLap.onclick = function(){
 
     timing = minutes + ":" + seconds + ":" + tens ;
     
-    splitList.push(timing)
+    if(timing == "00:00:00"){
+        noOfLap = 0;
+        counter= 0;
+        return;
+    }
+    
+    //Change this to the number of lap stored (currently 4 will be stored)
+    if(counter==5){
+        counter = 1;
+        lapSplit.innerHTML = "";
+        lap.innerHTML = "";
+    }
 
-    lapSplit.innerHTML += '<li>' + timing + '</li>'
+    lapSplit.innerHTML += '<li class="split">' + timing + '</li>'
+    lap.innerHTML += '<li class="lap">' + noOfLap + '</li>'
    
 }
 
